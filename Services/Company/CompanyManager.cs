@@ -1,23 +1,24 @@
 ﻿using System.Threading.Tasks;
+using cli_manager_API.Models.Data;
 
 namespace cli_manager_API.Services.Company
 {
     public class CompanyManager : ICompany
     {
-        private readonly Models.Data.CLIManagerContext _context;
-        public CompanyManager(Models.Data.CLIManagerContext context)
+        private readonly CLIManagerContext _context;
+        public CompanyManager(CLIManagerContext context)
         {
             _context = context;
         }
-        public async Task Create()
+        public async Task Create(Models.DTOs.Company newCompany)
         {
             await _context.Companies.AddAsync(new Models.Data.Company() { 
-                Name = "Alternative Company"
+                Name = newCompany.Name
             });
             await _context.SaveChangesAsync();
         }
 
-        public void Get()
+        public async Task Get()
         {
             throw new System.NotImplementedException();
         }
