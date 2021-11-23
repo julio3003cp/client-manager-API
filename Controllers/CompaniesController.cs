@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using cli_manager_API.Services.Company;
+using System.Threading.Tasks;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace cli_manager_API.Controllers
@@ -24,9 +25,10 @@ namespace cli_manager_API.Controllers
 
         // GET api/<CompaniesController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            await _company.Create();
+            return Ok();
         }
 
         // POST api/<CompaniesController>

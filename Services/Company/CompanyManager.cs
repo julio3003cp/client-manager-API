@@ -1,14 +1,20 @@
-﻿namespace cli_manager_API.Services.Company
+﻿using System.Threading.Tasks;
+
+namespace cli_manager_API.Services.Company
 {
     public class CompanyManager : ICompany
     {
-        public CompanyManager()
+        private readonly Models.Data.CLIManagerContext _context;
+        public CompanyManager(Models.Data.CLIManagerContext context)
         {
-
+            _context = context;
         }
-        public void Create()
+        public async Task Create()
         {
-            throw new System.NotImplementedException();
+            await _context.Companies.AddAsync(new Models.Data.Company() { 
+                Name = "Alternative Company"
+            });
+            await _context.SaveChangesAsync();
         }
 
         public void Get()

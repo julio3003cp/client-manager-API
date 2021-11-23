@@ -1,9 +1,11 @@
-﻿namespace cli_manager_API.Services.Company
+﻿using System.Threading.Tasks;
+
+namespace cli_manager_API.Services.Company
 {
     public interface ICompany
     {
         void Get();
-        void Create();
+        Task Create();
         void Update();
         void Remove();
     }
