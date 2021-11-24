@@ -62,6 +62,21 @@ namespace cli_manager_API.Controllers
             }
         }
 
+        // POST api/<ClientsController>/address
+        [HttpPost("Address/{clientId}")]
+        public async Task<IActionResult> Address(int clientId, [FromBody] Models.DTOs.Cli.Address newAddress)
+        {
+            try
+            {
+                await _client.AddAddress(clientId, newAddress);
+                return Created($"api/Clients/{clientId}", null);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         // PUT api/<ClientsController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Models.DTOs.Cli.Client updatedClient)
@@ -77,6 +92,21 @@ namespace cli_manager_API.Controllers
             }
         }
 
+        // PUT api/<ClientsController>/address
+        [HttpPut("Address/{addressId}")]
+        public async Task<IActionResult> UpdateAddress(int addressId, [FromBody] Models.DTOs.Cli.Address updatedAddress)
+        {
+            try
+            {
+                await _client.UpdateAddress(addressId, updatedAddress);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         // DELETE api/<ClientsController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -84,6 +114,21 @@ namespace cli_manager_API.Controllers
             try
             {
                 await _client.Remove(id);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // DELETE api/<ClientsController>/address/5
+        [HttpDelete("Address/{addressId}")]
+        public async Task<IActionResult> DeleteAddress(int addressId)
+        {
+            try
+            {
+                await _client.DeleteAddress(addressId);
                 return Ok();
             }
             catch (System.Exception ex)

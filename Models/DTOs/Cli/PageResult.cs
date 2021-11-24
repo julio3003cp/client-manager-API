@@ -1,6 +1,6 @@
 ﻿namespace cli_manager_API.Models.DTOs.Cli
 {
-    public struct PageResult
+    public abstract class PageResult
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

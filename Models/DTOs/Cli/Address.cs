@@ -2,8 +2,9 @@
 {
     public struct Address
     {
-        public Address(short type, string streetname, int number, string city, string country, string comments)
+        public Address(int id,short type, string streetname, int number, string city, string country, string comments)
         {
+            Id = id;
             Type = type;
             StreetName = streetname;
             Number = number;
@@ -12,6 +13,7 @@
             Comments = comments;
         }
 
+        public int Id { get; set; }
         public short Type { get; set; }
         public string StreetName { get; set; }
         public int Number { get; set; }

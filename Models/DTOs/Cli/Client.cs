@@ -23,12 +23,15 @@ namespace cli_manager_API.Models.DTOs.Cli
             Name = name;
             LastName = lastName;
 
-            foreach (Data.Address item in addresses)
+            if(addresses != null)
             {
-                Addresses.Add(new Address(item.Type, item.StreetName, item.Number,
-                    item.City, item.Country, item.Comments));
+                Addresses = new List<Address>();
+                foreach (Data.Address item in addresses)
+                {
+                    Addresses.Add(new Address(item.IdAddress, item.Type, item.StreetName, item.Number,
+                        item.City, item.Country, item.Comments));
+                }
             }
-
         }
         public int CompanyId { get; set; }
 
