@@ -18,35 +18,77 @@ namespace cli_manager_API.Controllers
 
         // GET: api/<CompaniesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var companies = await _company.Get();
+                return Ok(companies);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         // GET api/<CompaniesController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            await _company.Create();
-            return Ok();
+            try
+            {
+                var company = await _company.Get(id);
+                return Ok(company);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         // POST api/<CompaniesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] Models.DTOs.Company newCompany)
         {
+            try
+            {
+                var createdCompany = await _company.Create(newCompany);
+                return Created($"api/Companies/{createdCompany.Id}",createdCompany);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         // PUT api/<CompaniesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] Models.DTOs.Company updatedCompany)
         {
+            try
+            {
+                await _company.Update(id, updatedCompany);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         // DELETE api/<CompaniesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            try
+            {
+                await _company.Remove(id);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
     }
 }
