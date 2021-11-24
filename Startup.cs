@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,9 +29,14 @@ namespace cli_manager_API
         {
 
             services.AddControllers();
+            services.AddTransient<Services.Company.ICompany, Services.Company.CompanyManager>();
+            services.AddTransient<Services.Client.ClientManager, Services.Client.ClientManager>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "cli_manager_API", Version = "v1" });
+            });
+            services.AddDbContext<Models.Data.CLIManagerContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("Local"));
             });
         }
 
