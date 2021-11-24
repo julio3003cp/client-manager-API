@@ -30,7 +30,7 @@ namespace cli_manager_API
 
             services.AddControllers();
             services.AddTransient<Services.Company.ICompany, Services.Company.CompanyManager>();
-            services.AddTransient<Services.Client.ClientManager, Services.Client.ClientManager>();
+            services.AddTransient<Services.Client.IClient, Services.Client.ClientManager>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "cli_manager_API", Version = "v1" });

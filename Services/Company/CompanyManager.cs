@@ -49,9 +49,13 @@ namespace cli_manager_API.Services.Company
         {
             if (companyId == 0) throw new ArgumentException("Invalid argument value", nameof(companyId));
 
-            return await GetActiveCompanies().Where(x => x.IdCompany == companyId)
-                .Select(x => new Models.DTOs.Comp.Company(x.IdCompany, x.Name))
+            var company = await GetActiveCompanies().Where(x => x.IdCompany == companyId)
                 .SingleOrDefaultAsync();
+
+            if (company != null)
+                return new Models.DTOs.Comp.Company(company.IdCompany, company.Name);
+
+            return null;
         }
 
         public async Task Remove(int companyId)
