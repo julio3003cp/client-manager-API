@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using cli_manager_API.Services.Client;
+using System.Threading.Tasks;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace cli_manager_API.Controllers
@@ -16,34 +17,124 @@ namespace cli_manager_API.Controllers
         }
         // GET: api/<ClientsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var clients = await _client.Get();
+
+                return Ok(clients);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET api/<ClientsController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            try
+            {
+                var client = await _client.Get(id);
+
+                return Ok(client);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST api/<ClientsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] Models.DTOs.Cli.Client newClient)
         {
+            try
+            {
+                var client = await _client.Create(newClient);
+                return Created($"api/Clients/{client.ClientId}", client);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST api/<ClientsController>/address
+        [HttpPost("Address/{clientId}")]
+        public async Task<IActionResult> Address(int clientId, [FromBody] Models.DTOs.Cli.Address newAddress)
+        {
+            try
+            {
+                await _client.AddAddress(clientId, newAddress);
+                return Created($"api/Clients/{clientId}", null);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT api/<ClientsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] Models.DTOs.Cli.Client updatedClient)
         {
+            try
+            {
+                await _client.Update(id, updatedClient);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT api/<ClientsController>/address
+        [HttpPut("Address/{addressId}")]
+        public async Task<IActionResult> UpdateAddress(int addressId, [FromBody] Models.DTOs.Cli.Address updatedAddress)
+        {
+            try
+            {
+                await _client.UpdateAddress(addressId, updatedAddress);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE api/<ClientsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            try
+            {
+                await _client.Remove(id);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // DELETE api/<ClientsController>/address/5
+        [HttpDelete("Address/{addressId}")]
+        public async Task<IActionResult> DeleteAddress(int addressId)
+        {
+            try
+            {
+                await _client.DeleteAddress(addressId);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
