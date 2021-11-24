@@ -21,7 +21,7 @@ namespace cli_manager_API.Services.Company
             return _context.Companies.Where(x => x.State == (int)States.Active);
         }
 
-        public async Task<Models.DTOs.Company> Create(Models.DTOs.InputCompany company)
+        public async Task<Models.DTOs.Comp.Company> Create(Models.DTOs.Comp.InputCompany company)
         {
             //The company's name is required
             if(string.IsNullOrEmpty(company.Name)) throw new ArgumentNullException("Invalid argument value", nameof(company.Name));
@@ -35,22 +35,22 @@ namespace cli_manager_API.Services.Company
             await _context.Companies.AddAsync(newCompany);
             await _context.SaveChangesAsync();
 
-            return new Models.DTOs.Company(newCompany.IdCompany, newCompany.Name);
+            return new Models.DTOs.Comp.Company(newCompany.IdCompany, newCompany.Name);
         }
 
-        public async Task<List<Models.DTOs.Company>> Get()
+        public async Task<List<Models.DTOs.Comp.Company>> Get()
         {
             return await GetActiveCompanies()
-                .Select(x => new Models.DTOs.Company(x.IdCompany, x.Name))
+                .Select(x => new Models.DTOs.Comp.Company(x.IdCompany, x.Name))
                 .ToListAsync();
         }
 
-        public async Task<Models.DTOs.Company?> Get(int companyId)
+        public async Task<Models.DTOs.Comp.Company?> Get(int companyId)
         {
             if (companyId == 0) throw new ArgumentException("Invalid argument value", nameof(companyId));
 
             return await GetActiveCompanies().Where(x => x.IdCompany == companyId)
-                .Select(x => new Models.DTOs.Company(x.IdCompany, x.Name))
+                .Select(x => new Models.DTOs.Comp.Company(x.IdCompany, x.Name))
                 .SingleOrDefaultAsync();
         }
 
@@ -70,7 +70,7 @@ namespace cli_manager_API.Services.Company
 
         }
 
-        public async Task Update(int companyId, Models.DTOs.InputCompany updatedCompany)
+        public async Task Update(int companyId, Models.DTOs.Comp.InputCompany updatedCompany)
         {
             if (companyId == 0) throw new ArgumentException("Invalid argument value", nameof(companyId));
 

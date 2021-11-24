@@ -5,10 +5,10 @@ namespace cli_manager_API.Services.Company
 {
     public interface ICompany
     {
-        Task<List<Models.DTOs.Company>> Get();
-        Task<Models.DTOs.Company?> Get(int companyId);
-        Task<Models.DTOs.Company> Create(Models.DTOs.InputCompany newCompany);
-        Task Update(int companyId, Models.DTOs.InputCompany updatedCompany);
+        Task<List<Models.DTOs.Comp.Company>> Get();
+        Task<Models.DTOs.Comp.Company?> Get(int companyId);
+        Task<Models.DTOs.Comp.Company> Create(Models.DTOs.Comp.InputCompany newCompany);
+        Task Update(int companyId, Models.DTOs.Comp.InputCompany updatedCompany);
         Task Remove(int companyId);
     }
 }

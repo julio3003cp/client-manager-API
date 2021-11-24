@@ -48,7 +48,7 @@ namespace cli_manager_API.Controllers
 
         // POST api/<CompaniesController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Models.DTOs.InputCompany newCompany)
+        public async Task<IActionResult> Post([FromBody] Models.DTOs.Comp.InputCompany newCompany)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace cli_manager_API.Controllers
 
         // PUT api/<CompaniesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Models.DTOs.InputCompany updatedCompany)
+        public async Task<IActionResult> Put(int id, [FromBody] Models.DTOs.Comp.InputCompany updatedCompany)
         {
             try
             {

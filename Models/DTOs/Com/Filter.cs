@@ -1,4 +1,4 @@
-﻿namespace cli_manager_API.Models.DTOs
+﻿namespace cli_manager_API.Models.DTOs.Comp
 {
     public struct Filter
     {
