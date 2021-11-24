@@ -15,29 +15,33 @@ namespace cli_manager_API.Services.Company
             _context = context;
         }
 
-        public async Task<Models.DTOs.Company> Create(Models.DTOs.Company company)
+        private IQueryable<Models.Data.Company> GetActiveCompanies()
         {
+            //By default a filter is applied to get only those with an active status
+            return _context.Companies.Where(x => x.State == (int)States.Active);
+        }
+
+        public async Task<Models.DTOs.Company> Create(Models.DTOs.InputCompany company)
+        {
+            //The company's name is required
             if(string.IsNullOrEmpty(company.Name)) throw new ArgumentNullException("Invalid argument value", nameof(company.Name));
 
             var newCompany = new Models.Data.Company()
             {
                 Name = company.Name,
-                State = company.State,
+                State = (int)States.Active,
             };
 
             await _context.Companies.AddAsync(newCompany);
             await _context.SaveChangesAsync();
 
-            company.Id = newCompany.IdCompany;
-
-            return company;
+            return new Models.DTOs.Company(newCompany.IdCompany, newCompany.Name);
         }
 
         public async Task<List<Models.DTOs.Company>> Get()
         {
-            //By default a filter is applied to get only those with an active status
-            return await _context.Companies.Where(x => x.State == (int)States.Active)
-                .Select(x => new Models.DTOs.Company(x.IdCompany, x.Name, x.State))
+            return await GetActiveCompanies()
+                .Select(x => new Models.DTOs.Company(x.IdCompany, x.Name))
                 .ToListAsync();
         }
 
@@ -45,8 +49,8 @@ namespace cli_manager_API.Services.Company
         {
             if (companyId == 0) throw new ArgumentException("Invalid argument value", nameof(companyId));
 
-            return await _context.Companies.Where(x => x.State == (int)States.Active && x.IdCompany == companyId)
-                .Select(x => new Models.DTOs.Company(x.IdCompany, x.Name, x.State))
+            return await GetActiveCompanies().Where(x => x.IdCompany == companyId)
+                .Select(x => new Models.DTOs.Company(x.IdCompany, x.Name))
                 .SingleOrDefaultAsync();
         }
 
@@ -58,14 +62,15 @@ namespace cli_manager_API.Services.Company
 
             if(company != null)
             {
-                //Instead of deleting the record, it's state is change so that it won't appear on searchs
+                //Instead of deleting the record, it's state is changed so that it won't appear on searchs
+                //this could change later on
                 company.State = (int)States.Inactive;
                 await _context.SaveChangesAsync();
             }
 
         }
 
-        public async Task Update(int companyId, Models.DTOs.Company updatedCompany)
+        public async Task Update(int companyId, Models.DTOs.InputCompany updatedCompany)
         {
             if (companyId == 0) throw new ArgumentException("Invalid argument value", nameof(companyId));
 
@@ -74,7 +79,6 @@ namespace cli_manager_API.Services.Company
             if (company != null)
             {
                 company.Name = updatedCompany.Name;
-                company.State = updatedCompany.State;
                 await _context.SaveChangesAsync();
             }
         }

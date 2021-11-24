@@ -6,15 +6,18 @@
         {
             Id = id;
         }
-        public Company(int id, string name, int? state)
+        public Company(int id, string name)
         {
             Id = id;
             Name = name;
-            State = state;
-
         }
         public int Id { get; set; }
         public string Name { get; set; }
-        public int? State { get; set; }
+    }
+
+    public struct InputCompany
+    {
+        public string Name { get; set; }
+
     }
 }
