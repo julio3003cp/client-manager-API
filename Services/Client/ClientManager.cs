@@ -101,9 +101,9 @@ namespace cli_manager_API.Services.Client
                 if(updatedAddress.Type >= 0) address.Type = updatedAddress.Type;
                 if(!string.IsNullOrEmpty(updatedAddress.StreetName)) address.StreetName = updatedAddress.StreetName;
                 if (updatedAddress.Number > 0) address.Number = updatedAddress.Number;
-                if (!string.IsNullOrEmpty(updatedAddress.City)) address.City = updatedAddress.City;
-                if (!string.IsNullOrEmpty(updatedAddress.Country)) address.Country = updatedAddress.Country;
-                if (!string.IsNullOrEmpty(updatedAddress.Comments)) address.Comments = updatedAddress.Comments;
+                address.City = updatedAddress.City;
+                address.Country = updatedAddress.Country;
+                address.Comments = updatedAddress.Comments;
 
                 await _context.SaveChangesAsync();
             }
